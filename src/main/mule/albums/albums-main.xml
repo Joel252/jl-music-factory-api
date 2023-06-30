@@ -5,7 +5,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<flow name="get:\albums:jl-music-factory-api-config">
-        <ee:transform doc:name="Transform Message">
+        <set-variable value="albums-main::impl-get-albums" doc:name="currentFlow" doc:id="c185bb17-773d-457e-a49e-47fbb902e526" variableName="currentFlow"/>
+		<flow-ref doc:name="Flow Reference" doc:id="df822696-5de8-49fd-9af2-9a52c0faf627" name="impl-get-albums"/>
+		<ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -37,7 +39,9 @@ output application/json
         </ee:transform>
     </flow>
 	<flow name="post:\albums:application\json:jl-music-factory-api-config">
-        <ee:transform doc:name="Transform Message">
+        <set-variable value="albums-main::impl-add-albums" doc:name="currentFlow" doc:id="8affe789-91bf-4283-bf09-49b66b9f41bd" variableName="currentFlow" />
+		<flow-ref doc:name="Flow Reference" doc:id="1fb14076-2b8a-4e30-8dfb-578a4af1a9a4" name="impl-add-albums"/>
+		<ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json

@@ -5,7 +5,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<flow name="get:\artists:jl-music-factory-api-config">
-        <ee:transform doc:name="Transform Message">
+        <set-variable value="artists-main::impl-get-artists" doc:name="currentFlow" doc:id="872280d8-39b3-4b4e-bd21-fc5127817908" variableName="currentFlow" />
+		<flow-ref doc:name="Flow Reference" doc:id="51d58ce7-a330-4a5b-9a2e-387d4f036015" name="impl-get-artists"/>
+		<ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -42,9 +44,12 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-    </flow>
+    
+</flow>
 	<flow name="post:\artists:application\json:jl-music-factory-api-config">
-        <ee:transform doc:name="Transform Message">
+        <set-variable value="artists-main::impl-add-artists" doc:name="currentFlow" doc:id="924a4e89-5c95-480c-93b6-36f99cc9f2e2" variableName="currentFlow" />
+		<flow-ref doc:name="Flow Reference" doc:id="cd4d7a6b-6c27-4b3a-a1a8-f3bbc8dd476f" name="impl-add-artists"/>
+		<ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -78,7 +83,8 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-    </flow>
+    
+</flow>
 	<flow name="get:\artists\(artistId):jl-music-factory-api-config">
         <ee:transform doc:name="Transform Message">
             <ee:variables>
@@ -122,12 +128,14 @@ output application/json
         </ee:transform>
     </flow>
 	<flow name="patch:\artists\(artistId):application\json:jl-music-factory-api-config">
-        <ee:transform doc:name="Transform Message">
+		<ee:transform doc:name="Transform Message">
             <ee:variables>
                 <ee:set-variable variableName="artistId">attributes.uriParams.'artistId'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
+        <set-variable value="artists-main::impl-update-artist-urls" doc:name="currentFlow" doc:id="18fbb093-6f8f-4fb4-bd7d-9fa2fe8c6aad" variableName="currentFlow" />
+		<flow-ref doc:name="Flow Reference" doc:id="d35025d7-027c-4d55-bfe1-7e5c7c6426ac" name="impl-update-artist-urls" />
+		<ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -140,7 +148,8 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-    </flow>
+    
+</flow>
 	<flow name="delete:\artists\(artistId):jl-music-factory-api-config">
         <ee:transform doc:name="Transform Message">
             <ee:variables>

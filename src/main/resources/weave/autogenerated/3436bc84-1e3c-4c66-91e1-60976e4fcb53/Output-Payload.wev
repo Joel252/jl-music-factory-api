@@ -1,0 +1,7 @@
+%dw 2.0
+
+type auto_3436bc84_1e3c_4c66_91e1_60976e4fcb53_Output_Payload = {
+  groupName: String, 
+  _?: Any
+}
+

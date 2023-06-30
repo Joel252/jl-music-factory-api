@@ -5,7 +5,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<flow name="get:\songs:jl-music-factory-api-config">
-        <ee:transform doc:name="Transform Message">
+        <set-variable value="song-main::impl-get-songs" doc:name="currentFlow" doc:id="bb349bb8-fdcc-489b-bd5d-314195921c43" variableName="currentFlow" />
+		<flow-ref doc:name="Flow Reference" doc:id="230b4b39-a630-4b93-8c30-c756da051614" name="impl-get-songs"/>
+		<ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -47,7 +49,8 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-    </flow>
+    
+</flow>
 	<flow name="post:\songs:application\json:jl-music-factory-api-config">
         <ee:transform doc:name="Transform Message">
             <ee:message>

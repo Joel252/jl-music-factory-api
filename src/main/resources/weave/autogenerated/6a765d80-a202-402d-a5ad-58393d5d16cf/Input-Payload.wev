@@ -1,0 +1,7 @@
+%dw 2.0
+
+type auto_6a765d80_a202_402d_a5ad_58393d5d16cf_Input_Payload = {
+  artists: Array<{    firstName?: String,     lastName?: String,     bioUrl?: String,     groupName: String,     dateOfDeath?: String,     imageUrl?: String,     artistId?: Number,     dateOfBirth?: String,     mi?: String,     _?: Any  }>, 
+  _?: Any
+}
+
