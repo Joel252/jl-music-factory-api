@@ -1,11 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<sub-flow name="impl-get-albums" doc:id="e015a325-0f9e-4ada-b05f-96c8209151a9" >
 		<logger level="INFO" doc:name="INFO START" doc:id="8b830c06-fc42-470b-aca9-1003a2901ff3" message="impl-get-albums::START"/>
+		<set-variable value="#[attributes.queryParams.albumTitle]" doc:name="albumTitle" doc:id="80d64344-67a2-487b-bb46-bde12b00572d" variableName="albumTitle"/>
+		<db:select doc:name="Select albums" doc:id="973afb99-6e66-4c71-87d4-ea74f3231eec" config-ref="mysql-config">
+			<db:sql ><![CDATA[SELECT DISTINCT ALB.album_id, ALB.title, ALB.genre, ALB.publication_dt, 
+  ART.group_nm, ART.artist_id
+    FROM bc_album ALB 
+        LEFT OUTER JOIN bc_artist ART 
+          ON ART.artist_id = ALB.artist_id
+    WHERE ALB.title LIKE :albumTitle
+    GROUP BY ALB.title]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+  albumTitle: vars.albumTitle as String ++ '%'
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="2a3e3eac-d1b3-458e-b0e2-caf9aa64dc0f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	statusCode: p('http.get.status.ok'),
+	message: p('http.get.message.ok'),
+	searchCriteria: vars.albumTitle,
+	albums: payload map ( albums ) -> {
+		albumId: albums.album_id,
+		albumTitle: albums.title default "",
+		genre: albums.genre default "",
+		publicationDate: albums.publication_dt as String {format: "yyyy-MM-dd"},
+		artistId: (albums.artist_id default 0),
+		groupName: albums.group_nm default ""
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
 	</sub-flow>
 	<sub-flow name="impl-add-albums" doc:id="a74fac9d-e5d4-4ac3-bdec-a900d793fe25" >
 		<logger level="INFO" doc:name="INFO START" doc:id="b566d91f-e9f5-4363-8a23-246d13a5eaaa" message="#['impl-add-albums::START::payload:'  ++ write(payload, 'application/json')]" />
