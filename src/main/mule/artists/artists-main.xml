@@ -12,40 +12,6 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<flow name="post:\artists:application\json:jl-music-factory-api-config">
         <set-variable value="artists-main::impl-add-artists" doc:name="currentFlow" doc:id="924a4e89-5c95-480c-93b6-36f99cc9f2e2" variableName="currentFlow" />
 		<flow-ref doc:name="Flow Reference" doc:id="cd4d7a6b-6c27-4b3a-a1a8-f3bbc8dd476f" name="impl-add-artists"/>
-		<ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  statusCode: 202,
-  message: "ACCEPTED",
-  results: {
-    addedCounts: 1,
-    addedArtists: [
-      {
-        artistId: 51,
-        groupName: "Telegraph Canyon",
-        lastName: "Hickman",
-        firstName: "Jill",
-        dateOfBirth: "1988-01-29"
-      }
-    ],
-    duplicatedCounts: 1,
-    duplicatedArtists: [
-      {
-        artistId: 49,
-        groupName: "Telegraph Canyon",
-        lastName: "Harrison",
-        firstName: "Ted",
-        mi: "B",
-        dateOfBirth: "1982-03-21"
-      }
-    ]
-  }
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
     
 </flow>
 	<flow name="get:\artists\(artistId):jl-music-factory-api-config">

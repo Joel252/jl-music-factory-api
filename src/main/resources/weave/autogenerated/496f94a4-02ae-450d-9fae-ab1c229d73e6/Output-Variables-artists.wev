@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_496f94a4_02ae_450d_9fae_ab1c229d73e6_Output_Variables_artists = Array<{  firstName?: String,   lastName?: String,   bioUrl?: String,   groupName: String,   dateOfDeath?: String,   imageUrl?: String,   artistId?: Number,   dateOfBirth?: String,   mi?: String,   _?: Any}>
+
