@@ -1,0 +1,14 @@
+%dw 2.0
+
+type auto_1dce45eb_03d9_45be_8c1f_f15f070e44ac_Input_Payload = {|
+  artist: {|
+    artistId: Number | Null, 
+    groupName: String, 
+    lastName: String | Null, 
+    firstName: String | Null, 
+    mi: String | Null, 
+    dateOfBirth: String | Null, 
+    dateOfDeath: String | Null
+  |}
+|}
+
