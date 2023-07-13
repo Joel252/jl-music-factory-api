@@ -64,19 +64,6 @@ output application/json
         </ee:transform>
         <set-variable value="artists-main::impl-update-artist-urls" doc:name="currentFlow" doc:id="18fbb093-6f8f-4fb4-bd7d-9fa2fe8c6aad" variableName="currentFlow" />
 		<flow-ref doc:name="Flow Reference" doc:id="d35025d7-027c-4d55-bfe1-7e5c7c6426ac" name="impl-update-artist-urls" />
-		<ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  statusCode: 201,
-  message: "SUCCESS",
-  bioUrl: "https://last.fm/music/The Beatles/+wiki",
-  recordsUpdated: 3
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
     
 </flow>
 	<flow name="delete:\artists\(artistId):jl-music-factory-api-config">

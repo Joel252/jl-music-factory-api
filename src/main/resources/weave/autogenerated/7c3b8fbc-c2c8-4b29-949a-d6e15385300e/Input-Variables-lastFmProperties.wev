@@ -1,0 +1,9 @@
+%dw 2.0
+
+type auto_7c3b8fbc_c2c8_4b29_949a_d6e15385300e_Input_Variables_lastFmProperties = {|
+  method: String, 
+  apiKey: String, 
+  format: String, 
+  artist: String
+|}
+

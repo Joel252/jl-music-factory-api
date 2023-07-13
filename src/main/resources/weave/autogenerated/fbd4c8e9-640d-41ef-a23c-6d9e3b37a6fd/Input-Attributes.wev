@@ -1,0 +1,27 @@
+%dw 2.0
+
+type auto_fbd4c8e9_640d_41ef_a23c_6d9e3b37a6fd_Input_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {|
+    client_id: String, 
+    client_secret: String, 
+    correlation_id: String
+  |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {|  |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {| artistId: String |}, 
+  version: String, 
+  localAddress: String
+|}
+
