@@ -1,7 +1,0 @@
-%dw 2.0
-
-type auto_a74fac9d_e5d4_4ac3_bdec_a900d793fe25_Input_Payload = {
-  albums: Array<{    groupName?: String,     imageUrl?: String,     genre?: "Pop" | "HipHop" | "Rock" | "Jazz" | "Country" | "Classical" | "Mariachi" | "Metal" | "Other",     albumId?: Number,     albumTitle: String,     artistId?: Number,     publicationDate: String,     _?: Any  }>, 
-  _?: Any
-}
-
