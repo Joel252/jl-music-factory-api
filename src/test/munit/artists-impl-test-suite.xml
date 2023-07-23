@@ -26,6 +26,7 @@
 			<munit:set-event doc:name="lastFmProperties" doc:id="2f2caf79-f684-4d45-812d-061ab50e3477" >
 				<munit:variables >
 					<munit:variable key="lastFmProperties" value="#[{method: p('last.fm.method'), apiKey: p('last.fm.api.key'), format: p('last.fm.format'), artist: 'The Beatles' }]" mediaType="application/java" />
+					<munit:variable key="headerAttributes" value="#[{correlationId: '12345', clientId: '12345', clientSecret: '12345'}]" mediaType="application/java" />
 				</munit:variables>
 			</munit:set-event>
 			<flow-ref doc:name="sr-get-artist-info" doc:id="84403d94-68ac-468c-af3d-79126a0b8bc0" name="sr-get-artist-info"/>
