@@ -7,10 +7,27 @@
                 <http:body><![CDATA[#[payload]]]></http:body>
             </http:error-response>
         </http:listener>
-        <set-variable variableName="headerAttributes" value="#[%dw 2.0 &#10;output application/json &#10;---&#10;{&#10;	correlationId: message.attributes.headers.correlation_id,&#10;	clientId: message.attributes.headers.client_id,&#10;	clientSecret: message.attributes.headers.client_secret&#10;}]" doc:name="headerAttributes" />
-        <set-variable value="jl-music-factory-api-main::apiKitRouter" doc:name="currentFlow" doc:id="3e8e3f31-8d25-4f7c-b211-ae3c52530d92" variableName="currentFlow" />
+        <ee:transform doc:name="headerAttributes &amp; currentFlow" doc:id="97b13fac-5250-4cb2-b87e-1f84c97de456" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="headearAttributes" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	correlationId: message.attributes.headers.correlation_id default uuid(),
+	clientId: message.attributes.headers.client_id default "",
+	clientSecret: message.attributes.headers.client_secret default ""
+}]]></ee:set-variable>
+				<ee:set-variable variableName="currentFlow" ><![CDATA[%dw 2.0
+output application/json
+var currentFlow = "jl-music-factory-api-main::apiKitRouter"
+---
+currentFlow]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
         <apikit:router doc:name="APIkit Router" doc:id="e474b7e2-127a-4371-af30-b98e39d0bc3c" config-ref="jl-music-factory-api-config" />
-        <logger level="INFO" doc:name="Logger" doc:id="9c30fde1-52cb-4337-818e-6f487bc0b43a" message="#['jl-music-factory-api-main::payload: ' ++ write(payload,'application/json')]" />
+        <logger level="INFO" doc:name="Logger" doc:id="9c30fde1-52cb-4337-818e-6f487bc0b43a" message="#['jl-music-factory-api-main::payload: ' ++ write(payload,'application/json')]" category="${logcat}"/>
     </flow>
     <flow name="jl-music-factory-api-console" doc:id="7d0f944e-387b-4a6f-94c1-de21e517ef93">
         <http:listener doc:name="Listener" doc:id="d21e0e9b-9c88-45dd-a6bc-98f84ef8852a" config-ref="http-listener-config" path="/console/*" />

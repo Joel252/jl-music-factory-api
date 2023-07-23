@@ -1945,4 +1945,5 @@ type batchReport = {|
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
+  <types:enrichment select="#97b13fac-5250-4cb2-b87e-1f84c97de456"/>
 </types:mule>

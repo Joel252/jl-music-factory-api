@@ -15,6 +15,9 @@
             <SizeBasedTriggeringPolicy size="10 MB" />
             <DefaultRolloverStrategy max="10"/>
         </RollingFile>
+        <Console name="Console" target="SYSTEM_OUT">
+        	<JSONLayout objectMessageAsJsonObject="true"/>
+		</Console>
     </Appenders>
     <Loggers>
         
@@ -25,6 +28,9 @@
     
 		<!-- Mule logger -->        
         <AsyncLogger name="org.mule.runtime.core.internal.processor.LoggerMessageProcessor" level="INFO"/>
+        
+        <AsyncLogger name="org.mule.runtime.core.internal.processor.LoggerMessageProcessor" level="WARN"/>
+		<AsyncLogger name="com.puntosingular.soluciones" level="DEBUG"/>
  
  		<!-- SPS Logger -->  
  	<!-- 	<AsyncLogger name="SPS_JSON_APPENDER" level="DEBUG"> 
@@ -32,6 +38,7 @@
  
         <AsyncRoot level="INFO">
             <AppenderRef ref="file" />
+            <AppenderRef ref="Console" />
         </AsyncRoot>
     </Loggers>
 </Configuration>

@@ -6,8 +6,9 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<sub-flow name="impl-get-songs" doc:id="b7bafac0-ebe7-4be1-a6ad-401ff59398a6" >
-		<logger level="INFO" doc:name="INFO START" doc:id="6ebdd209-7b3c-48be-842b-c2c9fb13ab0f" message="impl-get-songs::START::payload" />
+		<logger level="INFO" doc:name="INFO START" doc:id="6ebdd209-7b3c-48be-842b-c2c9fb13ab0f" message="impl-get-songs::START::payload" category="${logcat}"/>
 		<set-variable value="#[attributes.queryParams.songTitle]" doc:name="songTitle" doc:id="7ce3918f-2e2f-4ef9-99d2-f32e0aca3419" variableName="songTitle"/>
+		<logger level="INFO" doc:name="Song Title" doc:id="4057be81-95e6-41b4-80c9-baee6754e4dd" message="#['impl-get-songs::VAR::songTitle:'  ++ write(vars.songTitle, 'application/json')]" category="${logcat}"/>
 		<db:select doc:name="Select" doc:id="6b3a39cd-4583-4195-ae27-b4f7e402d6c9" config-ref="mysql-config">
 			<db:sql ><![CDATA[SELECT SNG.song_id, SNG.song_title, SNG.publication_dt, SNG.genre, 
 SNG.duration,ALB.title AS album_nm, ART.group_nm, ALB.album_id
@@ -22,6 +23,7 @@ SNG.duration,ALB.title AS album_nm, ART.group_nm, ALB.album_id
 	songTitle: vars.songTitle as String ++ '%'
 }]]]></db:input-parameters>
 		</db:select>
+		<logger level="INFO" doc:name="Select Songs" doc:id="8a52bdf7-1ba3-438c-ab2f-564f2da1ba15" message="#['impl-get-songs::SELECT::payload:'  ++ write(payload, 'application/json')]" category="${logcat}"/>
 		<ee:transform doc:name="Transform Message" doc:id="cf2ac16f-f2c0-4620-be59-61fddfb5ef7b" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -46,5 +48,6 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="INFO END" doc:id="ae0f0469-bd67-43a7-a31f-855c484def94" message="#['impl-get-songs::END::payload:'  ++ write(payload, 'application/json')]" category="${logcat}"/>
 	</sub-flow>
 </mule>
