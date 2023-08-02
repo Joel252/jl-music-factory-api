@@ -29,6 +29,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 	<http:request-config name="last-fm-http-config" doc:name="HTTP Request configuration" doc:id="58d2dd08-65ee-4ad4-990e-451dc1ea26ad" >
 		<http:request-connection host="${last.fm.host}" port="${last.fm.port}" />
 	</http:request-config>
+	<api-gateway:autodiscovery apiId="${api.apiId}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="4111e833-d2a2-4a57-9127-15aabd8f9881" flowRef="jl-music-factory-api-main" />
 	<error-handler name="globalErrorHandler">
         <on-error-propagate type="APIKIT:BAD_REQUEST" enableNotifications="true" logException="false">
             <set-variable value="400" doc:name="Set HTTP Status code" doc:id="1d6586fd-fb35-42e5-8bdc-3c21840bba73" variableName="statusCode" />
