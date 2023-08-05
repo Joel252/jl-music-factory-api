@@ -42,6 +42,29 @@
 			<munit-tools:assert-that doc:name="Assert that bioUrl found" doc:id="ddeaeab2-d35a-41de-bf75-d243a6ca6c5c" is='#[MunitTools::startsWith("https://")]' message="bioUrl found" expression="#[payload.bioUrl]"/>
 		</munit:validation>
 	</munit:test>
+	<munit:test name="artists-impl-get-artists-test" doc:id="c1e6a977-c666-48e8-8fe0-a82b4f69fd91" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="80ea88b8-07a3-4dd5-bd56-3b60be60c4da" processor="db:select">
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/java&#10;---&#10;[{&#10;	artist_id: 2,&#10;	group_nm: "MUnit Test",&#10;	first_nm: "John",&#10;	last_nm: "Lennon",&#10;	birth_date: "1940-01-01",&#10;	death_date: "1980-11-01"&#10;}]]' mediaType="application/java" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="groupName queryParam" doc:id="5bcef4ef-89a2-499d-965b-51b0827299ba">
+				<munit:attributes value='#[{queryParams: {"groupName":"MUnit Test"}}]' />
+				<munit:variables >
+					<munit:variable key="headerAttributes" value="#[{correlationId: '12345', clientId: '12345', clientSecret: '12345'}]" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="impl-get-artists" doc:id="45c97ef3-5630-438a-a61c-449894da7593" name="impl-get-artists"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that NOT null" doc:id="480dbc64-3dc7-4dfa-926c-e5cf5e3b7419" message='NOT null' expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+			<munit-tools:assert-that doc:name="Assert that Artist firstName" doc:id="4084ce03-7f8f-4162-9df1-ac9ad42d544a" message="NOT John" expression="#[payload.artists[0].firstName as String]" is="#[MunitTools::startsWith('John')]"/>
+			<munit-tools:assert-that doc:name="Assert that Artist lastName" doc:id="76593186-88c9-433c-b7d6-641c8ee67837" message="NOT Lennon" expression="#[payload.artists[0].lastName as String]" is="#[MunitTools::startsWith('Lennon')]"/>
+		</munit:validation>
+	</munit:test>
 
 
 </mule>

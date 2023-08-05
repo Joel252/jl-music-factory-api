@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="albums-impl-test-suite.xml" />
+	<munit:test name="albums-impl-get-albums-test" doc:id="309eefd7-4854-4892-8d64-072363aac313" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="010ab5df-2bf1-408a-8c04-3e1cff55604a" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Select albums" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="973afb99-6e66-4c71-87d4-ea74f3231eec" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="mysql-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/java&#10;---&#10;[&#10;  {&#10;    "album_id": 1,&#10;    "title": "MUnit Let It Be",&#10;    "genre": "ROCK",&#10;    "publication_dt": "1970-05-08",&#10;    "artist_id": 1,&#10;    "artist_nm": "The Beatles"&#10;  },&#10;  {&#10;    "album_id": 2,&#10;    "title": "MUnit Let It Be (CD)",&#10;    "genre": "ROCK",&#10;    "publication_dt": "1970-05-08",&#10;    "artist_id": 1,&#10;    "artist_nm": "The Beatles"&#10;  }&#10;]]' mediaType="application/java" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="550b2bdc-daa4-44fb-a0c1-d63a67c08dd9" >
+				<munit:attributes value='#[{queryParams: {"albumTitle":"Let it Be"}}]' />
+				<munit:variables >
+					<munit:variable key="headerAttributes" value="#[{correlationId: '12345', clientId: '12345', clientSecret: '12345'}]" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to impl-get-albums" doc:id="324b9fee-9c83-4503-80e3-88193bd8b346" name="impl-get-albums"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that NOT null" doc:id="f5131725-233d-4ed6-a279-01f21806a7c4" message="NOT null" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+			<munit-tools:assert-that doc:name="Assert that Size = 2" doc:id="e680da60-c002-4f2a-8eec-cf939f17475b" message="SIZE = 2" expression="#[sizeOf(payload.albums)]" is="#[MunitTools::equalTo(2)]"/>
+			<munit-tools:assert-that doc:name="Assert that payload content" doc:id="84e89439-f686-47c9-aca0-991fa52a7fec" message="startsWith MUnit" expression="#[payload.albums[0].albumTitle]" is='#[MunitTools::startsWith("MUnit")]'/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
