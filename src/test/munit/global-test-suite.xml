@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<munit:config name="global-config-test-suite.xml" />
+	<munit:test name="global-error-handling-subflow-test" doc:id="6473134c-d1de-4b71-b755-7a8c077eeca6" description="Test">
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="e11198bc-b5eb-4ab1-a052-eebb0be99475" >
+				<munit:variables >
+					<munit:variable key="statusCode" value="422" mediaType="application/java" />
+					<munit:variable key="failValidation" value='"validation"' mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+			<try doc:name="Try" doc:id="daceeb88-ec51-4b52-b5d1-9619e9b87b0b" >
+				<validation:is-number numberType="SHORT" doc:name="Is number" doc:id="316d8e5c-ffa9-4872-9e23-ee5fb27543e5" value="#[vars.failValidation]" message="The MUnit Test failed this purposely to test error transformation"/>
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="38c4f8ad-a3f4-4494-b293-281332d5b76e" >
+						<flow-ref doc:name="error-handling-subflow" doc:id="c5b69d85-d682-4eb3-98e5-034971fbab91" name="error-handling-subflow" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that payload NOT null" doc:id="6e250be0-df12-4133-b8f8-619a2776b5b1" is="#[MunitTools::notNullValue()]" message="Is NOT null" expression="#[payload]"/>
+			<munit-tools:assert-that doc:name="Assert that status 422" doc:id="4af54541-e2e5-40f3-bcaa-7c5d188c6910" message="status 422" expression="#[payload.statusCode as String]" is='#[MunitTools::containsString("422")]'/>
+			<munit-tools:assert-that doc:name="Assert that validation error message" doc:id="35d39d6b-badf-41ac-8330-d33290351f80" message="Validation error message" expression="#[payload.error.detail]" is='#[MunitTools::containsString("The MUnit Test failed this purposely to test error transformation")]'/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
